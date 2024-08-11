@@ -3,6 +3,7 @@
 div.card-container{
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     row-gap: 1em;
     column-gap: 2em;
 }

@@ -83,6 +83,9 @@ div.card-container {
   display: inline-block;
   font-size: 13px;
 }
+.btn-row > button:hover{
+  cursor: pointer;
+}
 .icon,
 .toggle-details:hover {
   cursor: pointer;
