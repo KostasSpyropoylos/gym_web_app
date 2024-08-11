@@ -1,0 +1,175 @@
+.pending-users {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1em;
+  /* align-items: center; */
+  justify-content: space-between;
+}
+.manage-users {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1em;
+}
+.user-number {
+  margin-top: 2.3em;
+}
+
+.new-user {
+  align-self: center;
+  background-color: #007bff;
+  display: flex;
+  column-gap: 0.5em;
+  padding: 0.8em;
+  border-radius: 5px 5px 5px 5px;
+}
+.new-user:hover {
+  cursor: pointer;
+  background-color: gray;
+}
+
+.newUserText {
+  color: white;
+  font-weight: bold;
+}
+
+.icon,
+.toggle-details:hover {
+  cursor: pointer;
+  /* background-color: gray; */
+}
+.table-container {
+  margin-top: 3em;
+  background-color: white;
+  align-items: center;
+  color: black;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+th {
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-bottom: 5px solid #ddd;
+}
+
+td {
+  text-align: center;
+  height: 50px;
+}
+td >span> svg {
+  font-size: 7px;
+}
+td >span> svg:hover {
+  cursor: pointer;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 8px;
+}
+
+.edit-btn {
+  background-color: #007bff; /* Blue for edit button */
+}
+
+.edit-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red for delete button */
+}
+
+.delete-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+.item:first-child{
+    margin-top: 2em;
+}
+.submit{
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 2em;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {
+    float: left;
+  }
+  div.content {
+    margin-left: 0;
+  }
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
