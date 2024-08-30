@@ -9,7 +9,7 @@ body {
 .sidebar {
   margin: 0;
   padding: 0;
-  width: 200px;
+  width: 25rem;
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
@@ -56,9 +56,10 @@ svg {
 
 /* Content Start Here */
 div.content {
-  margin-left: 200px;
+  margin-left: 25rem;
   padding: 1px 16px;
-  height: 1000px;
+  height: 100%;
+  width: 100%;
 }
 
 div.main-content {
@@ -71,11 +72,39 @@ div.main-content {
   border: none;
   border-radius: 5px;
 }
-input{
-  padding: 12px 20px;
-  margin: 8px 0;
-  box-sizing: border-box;
+input {
+  padding: 12px 20px;         /* Consistent padding */
+  margin: 8px 0;              /* Consistent margin */
+  box-sizing: border-box;     /* Ensures padding and border are included in width/height */
+  border: 1px solid #ccc;     /* Same border as select */
+  border-radius: 4px;         /* Rounded corners for consistency */
+  background-color: white;    /* Background color to match the select */
+  font-size: 16px;            /* Font size for consistency */
+  width: 100%;                /* Full width to align with other elements */
+  appearance: none;           /* Removes default styling, but note this has minimal effect on inputs */
 }
+
+input:focus {
+  border-color: #4A90E2;      /* Highlight border color on focus */
+  outline: none;              /* Removes default outline */
+}
+select {
+  padding: 12px 20px;  /* Same padding as input */
+  margin: 8px 0;       /* Same margin as input */
+  box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+  border: 1px solid #ccc; /* Adds a border similar to a standard input */
+  border-radius: 4px;  /* Adds rounded corners */
+  background-color: white; /* Default background color */
+  font-size: 16px;     /* Adjust font size for consistency */
+  width: 100%;         /* Make the select box width consistent with input elements */
+  appearance: none;    /* Removes the default browser styling for select */
+}
+
+select:focus {
+  border-color: #4A90E2; /* Adds a highlight border color when focused */
+  outline: none;         /* Removes default outline */
+}
+
 .danger:hover, .success:hover{
   cursor: pointer;
 }

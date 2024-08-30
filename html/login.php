@@ -1,3 +1,60 @@
+<?php
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve email and password from the form
+    $email = $_POST['login_email'];
+    $password = $_POST['login_password'];
+
+    // Prepare the data for the API request
+    $postData = array(
+        'username' => $email,
+        'password' => $password
+    );
+
+    // Convert data to JSON format
+    $jsonData = json_encode($postData);
+
+    // API endpoint URL
+    $apiUrl = 'http://your-api-domain.com/your-api-endpoint'; // Replace with your actual API URL
+
+    // Initialize cURL session
+    $ch = curl_init($apiUrl);
+
+    // Set cURL options
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+
+    // Execute cURL request
+    $response = curl_exec($ch);
+
+    // Check for cURL errors
+    if (curl_errno($ch)) {
+        echo 'Error: ' . curl_error($ch);
+    } else {
+        // Decode the JSON response
+        $responseData = json_decode($response, true);
+
+        // Check the response status
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
+            // Login successful
+            // Here you can set session variables or cookies as needed
+            session_start();
+            $_SESSION['user'] = $responseData; // Store the user data in session
+            header('Location: ./index.html'); // Redirect to home page after successful login
+            exit;
+        } else {
+            // Login failed
+            echo 'Invalid email or password. Please try again.';
+        }
+    }
+
+    // Close cURL session
+    curl_close($ch);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
