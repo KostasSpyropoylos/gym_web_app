@@ -2,6 +2,9 @@ body {
   margin: 0;
   padding: 0;
   background-color: #d9d9d9;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .sidebar {
   margin: 0;
@@ -11,6 +14,7 @@ body {
   position: fixed;
   height: 100%;
   overflow: auto;
+  
 }
 
 /* Sidebar links */
@@ -41,6 +45,16 @@ svg {
   font-weight: bold;
   color: #007bff !important;
 }
+/* Topbar Styles */
+.topbar{
+  flex-grow: 4;
+  padding:2px;
+  right: 300px;
+  background-color: #fff;
+  z-index: 1;
+}
+
+/* Content Start Here */
 div.content {
   margin-left: 200px;
   padding: 1px 16px;
