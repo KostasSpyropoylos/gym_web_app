@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
   exit();
 }
 
-$apiUrl = 'localhost:8080/GymWebService/rest/users';
+$apiUrl = 'localhost:8080/GymWebService/rest/services';
 
 $ch = curl_init($apiUrl);
 
@@ -22,7 +22,7 @@ if (curl_errno($ch)) {
   echo 'Error: ' . curl_error($ch);
 } else {
   // Decode the JSON response
-  $users = json_decode($response, true);
+  $services = json_decode($response, true);
 
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -181,7 +181,7 @@ if (curl_errno($ch)) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/css/global-styles.css" />
-  <link rel="stylesheet" href="/css/manage-programs.css" />
+  <link rel="stylesheet" href="/css/manage-users.css" />
 
   <title>Διαχείριση Χρηστών</title>
 </head>
@@ -205,129 +205,52 @@ if (curl_errno($ch)) {
           <span class="newUserText">Νέα Υπηρεσία</span>
         </div>
       </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Όνομα Υπηρεσίας</th>
-              <!-- Service Name -->
-              <th>Περιγραφή</th>
-              <!-- Description -->
-              <th>Τιμή</th>
-              <!-- Price -->
-              <th>Διάρκεια</th>
-              <!-- Duration -->
-              <th>Κατηγορία</th>
-              <!-- Category -->
-              <th>Κατάσταση</th>
-              <!-- Status -->
-              <th>Εκπαιδευτής</th>
-              <!-- Instructor -->
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Προσωπική Εκπαίδευση</td>
-              <td>Ατομικές συνεδρίες εκπαίδευσης</td>
-              <td>50€ ανά ώρα</td>
-              <td>60 λεπτά</td>
-              <td>Δύναμη</td>
-              <td>Ενεργή</td>
-              <td>Γιάννης Παπαδόπουλος</td>
-              <td>
-                <span onclick="openModal()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Ομαδικά Μαθήματα</td>
-              <td>Ομαδικά μαθήματα γυμναστικής</td>
-              <td>15€ ανά μάθημα</td>
-              <td>45 λεπτά</td>
-              <td>Καρδιοαναπνευστική</td>
-              <td>Ενεργή</td>
-              <td>Μαρία Νικολάου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Διατροφική Συμβουλευτική</td>
-              <td>Προσωπικά προγράμματα διατροφής</td>
-              <td>30€ ανά συνεδρία</td>
-              <td>30 λεπτά</td>
-              <td>Διατροφή</td>
-              <td>Ανενεργή</td>
-              <td>Ελένη Δεληγιάννη</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Πιλάτες</td>
-              <td>Μαθήματα Πιλάτες για αρχάριους</td>
-              <td>20€ ανά μάθημα</td>
-              <td>50 λεπτά</td>
-              <td>Ευλυγισία</td>
-              <td>Ενεργή</td>
-              <td>Νίκος Αλεξίου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Yoga</td>
-              <td>Μαθήματα γιόγκα για όλες τις ηλικίες</td>
-              <td>25€ ανά μάθημα</td>
-              <td>60 λεπτά</td>
-              <td>Ευεξία</td>
-              <td>Ενεργή</td>
-              <td>Σοφία Κωνσταντίνου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <?php
+
+      if ($services) {
+        echo '<div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Όνομα Υπηρεσίας</th>
+                            <th>Περιγραφή</th>
+                            <th>Τιμή</th>
+                            <th>Διάρκεια</th>
+                            <th>Κατηγορία</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+        // Loop through the users array and generate table rows
+        foreach ($services as $service) {
+
+          $serviceDataJson = htmlspecialchars(json_encode($service), ENT_QUOTES, 'UTF-8');
+          echo '<tr>';
+          echo '<td>' . htmlspecialchars($service['serviceName']) . '</td>';
+          echo '<td>' . htmlspecialchars($service['description']) . '</td>';
+          echo '<td>' . $service['price'] . '</td>';
+          echo '<td>' . $service['duration'] . '</td>';
+          echo '<td>' . $service['category'] . '</td>';
+          echo '<td>';
+          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512" onclick="openModalWithServiceData(' . $serviceDataJson . ', \'detailModal\')">';
+          echo '    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
+          echo '    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
+          echo '</svg>';
+          echo '</td>';
+        }
+
+        echo '  </tbody>
+              </table>
+            </div>';
+      } else {
+        echo 'No users found.';
+      }
+
+      // // Close cURL session
+      curl_close($ch);
+      ?>
+
       <!-- The New Service Modal -->
       <div id="newServiceModal" class="modal">
         <!-- Modal content -->
@@ -401,14 +324,6 @@ if (curl_errno($ch)) {
                 <label for="name"> Αλλαγή Κατηγορίας</label>
                 <input />
               </div>
-              <div class="item">
-                <label for="name"> Αλλαγή Κατάστασης</label>
-                <input />
-              </div>
-              <div class="item">
-                <label for="name"> Αλλαγή Εκπαιδευτή</label>
-                <input />
-              </div>
               <div class="submit">
                 <input type="submit" class="danger" value="Διαγραφή Υπηρεσίας">
                 <input type="submit" class="success" value="Αποδοχή Αλλαγών">
@@ -422,14 +337,9 @@ if (curl_errno($ch)) {
   </div>
 </body>
 <script>
-  // Open detail modal
-  function openModal() {
-    var modal = document.getElementById("detailModal");
-    modal.style.display = "block";
-  }
   // Open new service modal
-  function openServiceModal() {
-    var modal = document.getElementById("newServiceModal");
+  function openModalWithServiceData(serviceDataJson, modalName) {
+    let modal = document.getElementById(modalName);
     modal.style.display = "block";
   }
   // Cloes modal
