@@ -1,4 +1,12 @@
 <?php
+session_start();
+// Check if the user session is set
+if (!isset($_SESSION['user'])) {
+  // If the user session is not set, redirect to the login page
+  header('Location: login.php'); // Adjust the login page URL as needed
+  exit();
+}
+
 $apiUrl = 'localhost:8080/GymWebService/rest/users';
 
 $ch = curl_init($apiUrl);
@@ -159,73 +167,77 @@ if (curl_errno($ch)) {
       exit();
     }
   }
+}
+
+
 ?>
 
-  <!DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/global-styles.css" />
-    <link rel="stylesheet" href="/css/manage-users.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/global-styles.css" />
+  <link rel="stylesheet" href="/css/manage-users.css" />
 
-    <title>Διαχείριση Χρηστών</title>
-  </head>
+  <title>Διαχείριση Χρηστών</title>
+</head>
 
-  <body>
-    <div class="sidebar"></div>
-    <div class="content">
-      <div class="main-content">
-        <div class="pending-users">
-          <div class="manage-users">
-            <h3>Διαχείριση Χρηστών</h3>
-            <h5 class="user-number">1500 Συνολικά</h5>
-          </div>
-          <div class="new-user" onclick="openModal('createUserModal')">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-              <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-              <path
-                fill="#ffffff"
-                d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-            </svg>
-            <span class="newUserText">Νέος Χρήστης</span>
-          </div>
+<body>
+  <div class="sidebar"><?php require '../shared/sidebar.php'; ?></div>
+  <div class="content">
+    <div class="main-content">
+      <div class="pending-users">
+        <div class="manage-users">
+          <h3>Διαχείριση Χρηστών</h3>
+          <h5 class="user-number">1500 Συνολικά</h5>
         </div>
-        <?php if (is_array($users)) {
+        <div class="new-user" onclick="openModal('createUserModal')">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+            <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path
+              fill="#ffffff"
+              d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304l91.4 0C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7L29.7 512C13.3 512 0 498.7 0 482.3zM504 312l0-64-64 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l64 0 0-64c0-13.3 10.7-24 24-24s24 10.7 24 24l0 64 64 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-64 0 0 64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
+          </svg>
+          <span class="newUserText">Νέος Χρήστης</span>
+        </div>
+      </div>
+      <?php
+      if (is_array($users)) {
 
-          echo '<div class="card-container">';
-          foreach ($users as $user) {
-            // Filter users
-            if ($user['isPending'] == true && $user['isActive'] === NULL) {
-              $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
-              // Generate HTML for each user
-              echo '    <div class="card">';
-              echo '        <div class="icon">';
-              echo '            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">';
-              echo '                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
-              echo '                <path d="M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128zm94.5 200.2l18.6 31L175.8 483.1l-36-146.9c-2-8.1-9.8-13.4-17.9-11.3C51.9 342.4 0 405.8 0 481.3c0 17 13.8 30.7 30.7 30.7l131.7 0c0 0 0 0 .1 0l5.5 0 112 0 5.5 0c0 0 0 0 .1 0l131.7 0c17 0 30.7-13.8 30.7-30.7c0-75.5-51.9-138.9-121.9-156.4c-8.1-2-15.9 3.3-17.9 11.3l-36 146.9L238.9 359.2l18.6-31c6.4-10.7-1.3-24.2-13.7-24.2L224 304l-19.7 0c-12.4 0-20.1 13.6-13.7 24.2z" />';
-              echo '            </svg>';
-              echo '        </div>';
-              echo '        <div class="statistics">';
-              echo '            <span class="label">' . htmlspecialchars($user['fullName']) . '</span>';
-              echo '            <span class="number">' . htmlspecialchars($user['userName']) . '</span>';
-              echo '            <div class="btn-row">';
-              echo '                <button style="background-color: #ff4136" onclick="handleReject(' . $userDataJson . ')">Απόρριψη</button>';
-              echo '                <button style="background-color: #00db00" onclick="handleAccept(' . $user['userId'] . ')">Αποδοχή</button>';
-              echo '            </div>';
-              echo '        </div>';
-              echo '        <div class="toggle-details" onclick=\'openModalWithUserData(' . $userDataJson . ', "newUserModal")\'>';
-              echo '            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">';
-              echo '                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
-              echo '                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
-              echo '            </svg>';
-              echo '        </div>';
-              echo '    </div>';
-            }
+        echo '<div class="card-container">';
+        foreach ($users as $user) {
+          // Filter users
+          if ($user['isPending'] == true && $user['isActive'] === NULL) {
+            $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
+            // Generate HTML for each user
+            echo '    <div class="card">';
+            echo '        <div class="icon">';
+            echo '            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">';
+            echo '                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
+            echo '                <path d="M96 128a128 128 0 1 0 256 0A128 128 0 1 0 96 128zm94.5 200.2l18.6 31L175.8 483.1l-36-146.9c-2-8.1-9.8-13.4-17.9-11.3C51.9 342.4 0 405.8 0 481.3c0 17 13.8 30.7 30.7 30.7l131.7 0c0 0 0 0 .1 0l5.5 0 112 0 5.5 0c0 0 0 0 .1 0l131.7 0c17 0 30.7-13.8 30.7-30.7c0-75.5-51.9-138.9-121.9-156.4c-8.1-2-15.9 3.3-17.9 11.3l-36 146.9L238.9 359.2l18.6-31c6.4-10.7-1.3-24.2-13.7-24.2L224 304l-19.7 0c-12.4 0-20.1 13.6-13.7 24.2z" />';
+            echo '            </svg>';
+            echo '        </div>';
+            echo '        <div class="statistics">';
+            echo '            <span class="label">' . htmlspecialchars($user['fullName']) . '</span>';
+            echo '            <span class="number">' . htmlspecialchars($user['userName']) . '</span>';
+            echo '            <div class="btn-row">';
+            echo '                <button style="background-color: #ff4136" onclick="handleReject(' . $userDataJson . ')">Απόρριψη</button>';
+            echo '                <button style="background-color: #00db00" onclick="handleAccept(' . $user['userId'] . ')">Αποδοχή</button>';
+            echo '            </div>';
+            echo '        </div>';
+            echo '        <div class="toggle-details" onclick=\'openModalWithUserData(' . $userDataJson . ', "newUserModal")\'>';
+            echo '            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">';
+            echo '                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
+            echo '                <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
+            echo '            </svg>';
+            echo '        </div>';
+            echo '    </div>';
           }
-          echo '</div>';
-        }  ?>
+        }
+        echo '</div>';
+      }  ?>
 
 
       <?php
@@ -248,23 +260,25 @@ if (curl_errno($ch)) {
 
         // Loop through the users array and generate table rows
         foreach ($users as $user) {
-          $role = ($user['roleId'] == 1) ? 'Admin' : 'Αθλητής';
-          $status = ($user['isActive']) ? 'Ενεργό' : 'Ανενεργό';
-          $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates'; // Example for subscription, replace with actual logic
-          $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
-          echo '<tr>';
-          echo '<td>' . htmlspecialchars($user['fullName']) . '</td>';
-          echo '<td>' . htmlspecialchars($user['email']) . '</td>';
-          echo '<td>' . $role . '</td>';
-          echo '<td>' . htmlspecialchars(date('d/m/Y', strtotime($user['createAt']))) . '</td>';
-          echo '<td>' . $subscriptionType . '</td>';
-          echo '<td>' . $status . '</td>';
-          echo '<td>';
-          echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512" onclick="openModalWithUserData(' . $userDataJson . ', \'detailModal\')">';
-          echo '    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
-          echo '    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
-          echo '</svg>';
-          echo '</td>';
+          $role = ($user['roleId'] == 1) ? 'Γυμναστής' : (($user['roleId'] == 2) ? 'Αθλητής' : 'Admin');
+          $status = ($user['isActive'] ? "Ενεργός" : "Ανενεργός");
+          if ($user['isActive'] !== Null) {
+            $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates'; // Example for subscription, replace with actual logic
+            $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
+            echo '<tr>';
+            echo '<td>' . htmlspecialchars($user['fullName']) . '</td>';
+            echo '<td>' . htmlspecialchars($user['email']) . '</td>';
+            echo '<td>' . $role . '</td>';
+            echo '<td>' . htmlspecialchars(date('d/m/Y', strtotime($user['createAt']))) . '</td>';
+            echo '<td>' . $subscriptionType . '</td>';
+            echo '<td>' . $status . '</td>';
+            echo '<td>';
+            echo '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512" onclick="openModalWithUserData(' . $userDataJson . ', \'detailModal\')">';
+            echo '    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->';
+            echo '    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
+            echo '</svg>';
+            echo '</td>';
+          }
         }
 
         echo '  </tbody>
@@ -273,10 +287,9 @@ if (curl_errno($ch)) {
       } else {
         echo 'No users found.';
       }
-    }
 
-    // Close cURL session
-    curl_close($ch);
+      // // Close cURL session
+      curl_close($ch);
       ?>
 
       <!-- The Create User Modal -->
@@ -437,8 +450,9 @@ if (curl_errno($ch)) {
               <div class="item">
                 <label for="role">Αλλαγή Ρόλου</label>
                 <select name="role">
-                  <option value="1">Admin</option>
+                  <option value="1">Γυμναστής</option>
                   <option value="2">Αθλητής</option>
+                  <option value="3">Admin</option>
                 </select>
               </div>
 
@@ -466,112 +480,85 @@ if (curl_errno($ch)) {
         </div>
       </div>
 
-      </div>
     </div>
-    <script>
-      // Function to load sidebar.html content into the div
-      document.addEventListener("DOMContentLoaded", function() {
-        fetch("/shared/sidebar.html")
-          .then((response) => response.text())
-          .then((data) => {
-            document.querySelector(".sidebar").innerHTML = data;
-            const links = document.querySelectorAll(".sidebar a");
-            // Get the current page's URL
-            const currentPage = window.location.pathname.split("/").pop();
-            // Loop through each link
-            links.forEach((link) => {
-              // Check if the href of the link matches the current page URL
-              if (
-                link.getAttribute("href") === currentPage &&
-                link.classList != "logo"
-              ) {
-                // Add the active class to the matching link
-                link.classList.add("active");
-              } else {
-                // Remove the active class from other links (in case it's there)
-                link.classList.remove("active");
-              }
-            });
-          })
-          .catch((error) => console.log("Error loading sidebar:", error));
-      });
+  </div>
+  <script>
+    // Open detail modal
+    function openModal(modal) {
+      var modal = document.getElementById(modal);
+      modal.style.display = "block";
+    }
+    // Cloes modal
+    function closeModal(modal) {
+      var modal = document.getElementById(modal);
+      modal.style.display = "none";
+    }
 
-      // Open detail modal
-      function openModal(modal) {
-        var modal = document.getElementById(modal);
-        modal.style.display = "block";
-      }
-      // Cloes modal
-      function closeModal(modal) {
-        var modal = document.getElementById(modal);
-        modal.style.display = "none";
-      }
+    function openModalWithUserData(user, modalName) {
+      // Parse the user data from JSON if it's a strin
 
-      function openModalWithUserData(user, modalName) {
-        // Parse the user data from JSON if it's a strin
+      console.log(modalName)
+      user = {
+        user
+      };
+      console.log("user", user)
 
-        console.log(modalName)
-        user = {
-          user
-        };
-        console.log("user", user)
+      // Fill modal input fields with user data
+      if (modalName == "detailModal") {
+        document.querySelector('#detailModal input[name="user_id"]').value = user.user.userId || '';
+        document.querySelector('#detailModal input[name="full_name"]').value = user.user.fullName || '';
+        document.querySelector('#detailModal input[name="username"]').value = user.user.userName || '';
+        document.querySelector('#detailModal input[name="email"]').value = user.user.email || '';
+        document.querySelector('#detailModal input[name="phone_number"]').value = user.user.phoneNumber || '';
+        document.querySelector('#detailModal select[name="role"]').value = user.user.roleId; // Assuming roleId is 1 for Admin and 2 for Athlete
+        document.querySelector('#detailModal select[name="status"]').value = user.user.isActive ? true : false;
+        document.querySelector('#detailModal textarea[name="bio"]').value = user.user.bio || '';
+      } else {
+        console.log("user", user.user.userId)
 
-        // Fill modal input fields with user data
-        if (modalName == "detailModal") {
-          document.querySelector('#detailModal input[name="user_id"]').value = user.user.userId || '';
-          document.querySelector('#detailModal input[name="full_name"]').value = user.user.fullName || '';
-          document.querySelector('#detailModal input[name="username"]').value = user.user.userName || '';
-          document.querySelector('#detailModal input[name="email"]').value = user.user.email || '';
-          document.querySelector('#detailModal input[name="phone_number"]').value = user.user.phoneNumber || '';
-          document.querySelector('#detailModal select[name="role"]').value = user.user.roleId; // Assuming roleId is 1 for Admin and 2 for Athlete
-          document.querySelector('#detailModal select[name="status"]').value = user.user.isActive ? true : false;
-          document.querySelector('#detailModal textarea[name="bio"]').value = user.user.bio || '';
-        } else {
-          console.log("user", user.user.userId)
-
-          // document.querySelector('#newUserModal input[name="user_id"]').value = user?.user?.userId ;
-          document.querySelector('#newUserModal input[name="fullName"]').value = user.user.fullName;
-          document.querySelector('#newUserModal input[name="username"]').value = user.user.userName || '';
-          document.querySelector('#newUserModal input[name="email"]').value = user.user.email || '';
-          document.querySelector('#newUserModal input[name="phoneNumber"]').value = user.user.phoneNumber || '';
-          document.querySelector('#newUserModal input[name="role"]').value = user.user.roleId == 1 ? "Admin" : "Athlete"; // Assuming roleId is 1 for Admin and 2 for Athlete
-          // document.querySelector('#newUserModal select[name="status"]').value = user.user.isActive ? true : false;
-          document.querySelector('#newUserModal input[name="bio"]').value = user.user.bio || '';
-        }
-
-        // Open the modal
-        document.getElementById(modalName).style.display = 'block';
+        // document.querySelector('#newUserModal input[name="user_id"]').value = user?.user?.userId ;
+        document.querySelector('#newUserModal input[name="fullName"]').value = user.user.fullName;
+        document.querySelector('#newUserModal input[name="username"]').value = user.user.userName || '';
+        document.querySelector('#newUserModal input[name="email"]').value = user.user.email || '';
+        document.querySelector('#newUserModal input[name="phoneNumber"]').value = user.user.phoneNumber || '';
+        document.querySelector('#newUserModal input[name="role"]').value = user.user.roleId == 1 ? "Admin" : "Athlete"; // Assuming roleId is 1 for Admin and 2 for Athlete
+        // document.querySelector('#newUserModal select[name="status"]').value = user.user.isActive ? true : false;
+        document.querySelector('#newUserModal input[name="bio"]').value = user.user.bio || '';
       }
 
-      function handleReject(user) {
-        console.log("user",user)
-        console.log("im here dog")
-        const url = 'manage-users.php'; // URL to the same PHP file
-        const data = {
-          userId: user.userId,
-          isPending: 0,
-          isActive: 0
-        };
+      // Open the modal
+      document.getElementById(modalName).style.display = 'block';
+    }
 
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-          })
-          .then(response => console.log(response))
-          .then(result => {
-            console.log('User updated successfully', result);
-            // Optionally, refresh the page or update the UI to reflect the changes
-            location.reload(); // Reload the page to reflect changes
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            // Handle error accordingly
-          });
-      }
-    </script>
-  </body>
+    function handleReject(user) {
+      console.log("user", user)
+      console.log("im here dog")
+      const url = 'manage-users.php'; // URL to the same PHP file
+      const data = {
+        userId: user.userId,
+        isPending: 0,
+        isActive: 0
+      };
 
-  </html>
+      fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => console.log(response))
+        .then(result => {
+          console.log('User updated successfully', result);
+          // Optionally, refresh the page or update the UI to reflect the changes
+          location.reload(); // Reload the page to reflect changes
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle error accordingly
+        });
+    }
+  </script>
+</body>
+
+</html>

@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare the data for the API request
     $postData = array(
-        'username' => $email,
+        'email' => $email,
         'password' => $password
     );
 
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $jsonData = json_encode($postData);
 
     // API endpoint URL
-    $apiUrl = 'http://your-api-domain.com/your-api-endpoint'; // Replace with your actual API URL
+    $apiUrl = 'localhost:8080/GymWebService/rest/users'; // Replace with your actual API URL
 
     // Initialize cURL session
     $ch = curl_init($apiUrl);
@@ -46,6 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         } else {
             // Login failed
+            echo $responseData;
             echo 'Invalid email or password. Please try again.';
         }
     }
@@ -67,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <body>
     <div class="container login-container">
       <h2>Login</h2>
-      <form action="./index.html">
+      <form method="post">
         <label for="login_email">Email</label>
         <input type="email" id="login_email" name="login_email" required />
 
