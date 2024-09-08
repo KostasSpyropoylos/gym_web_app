@@ -1,3 +1,42 @@
+<?php
+session_start();
+// Example function to fetch schedules from your API
+function getAllSchedules()
+{
+
+  // Check if the user session is set
+  if (!isset($_SESSION['user'])) {
+    // If the user session is not set, redirect to the login page
+    header('Location: login.php'); // Adjust the login page URL as needed
+    exit();
+  }
+
+  $apiUrl = 'localhost:8080/GymWebService/rest/schedules';
+
+  $ch = curl_init($apiUrl);
+
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+
+  // Execute cURL request
+  $response = curl_exec($ch);
+
+  // Check for cURL errors
+  if (curl_errno($ch)) {
+    echo 'Error: ' . curl_error($ch);
+  } else {
+    // Decode the JSON response
+    $schedules = json_decode($response, true);
+  }
+
+  // Return the decoded data
+  return $schedules;
+}
+
+// Call the function to fetch the schedules from the API
+$schedules = getAllSchedules();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,122 +72,39 @@
         <table>
           <thead>
             <tr>
-              <th>Όνομα Υπηρεσίας</th>
-              <!-- Service Name -->
-              <th>Περιγραφή</th>
-              <!-- Description -->
-              <th>Τιμή</th>
-              <!-- Price -->
-              <th>Διάρκεια</th>
-              <!-- Duration -->
-              <th>Κατηγορία</th>
-              <!-- Category -->
-              <th>Κατάσταση</th>
-              <!-- Status -->
-              <th>Εκπαιδευτής</th>
-              <!-- Instructor -->
+              <th>Υπηρεσία</th> <!-- Service Name -->
+              <th>Ημέρα</th> <!-- Day of the Week -->
+              <th>Ώρα Έναρξης</th> <!-- Start Time -->
+              <th>Ώρα Λήξης</th> <!-- End Time -->
+              <th>Μέγιστη Χωρητικότητα</th> <!-- Max Capacity -->
+              <th>Εκπαιδευτής</th> <!-- Instructor/Trainer -->
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Προσωπική Εκπαίδευση</td>
-              <td>Ατομικές συνεδρίες εκπαίδευσης</td>
-              <td>50€ ανά ώρα</td>
-              <td>60 λεπτά</td>
-              <td>Δύναμη</td>
-              <td>Ενεργή</td>
-              <td>Γιάννης Παπαδόπουλος</td>
-              <td>
-                <span onclick="openModal()">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Ομαδικά Μαθήματα</td>
-              <td>Ομαδικά μαθήματα γυμναστικής</td>
-              <td>15€ ανά μάθημα</td>
-              <td>45 λεπτά</td>
-              <td>Καρδιοαναπνευστική</td>
-              <td>Ενεργή</td>
-              <td>Μαρία Νικολάου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Διατροφική Συμβουλευτική</td>
-              <td>Προσωπικά προγράμματα διατροφής</td>
-              <td>30€ ανά συνεδρία</td>
-              <td>30 λεπτά</td>
-              <td>Διατροφή</td>
-              <td>Ανενεργή</td>
-              <td>Ελένη Δεληγιάννη</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Πιλάτες</td>
-              <td>Μαθήματα Πιλάτες για αρχάριους</td>
-              <td>20€ ανά μάθημα</td>
-              <td>50 λεπτά</td>
-              <td>Ευλυγισία</td>
-              <td>Ενεργή</td>
-              <td>Νίκος Αλεξίου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td>Yoga</td>
-              <td>Μαθήματα γιόγκα για όλες τις ηλικίες</td>
-              <td>25€ ανά μάθημα</td>
-              <td>60 λεπτά</td>
-              <td>Ευεξία</td>
-              <td>Ενεργή</td>
-              <td>Σοφία Κωνσταντίνου</td>
-              <td>
-                <span onclick="openModal(this)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 128 512">
-                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
-                  </svg>
-                </span>
-              </td>
-            </tr>
+            <?php if (!empty($schedules)): ?>
+              <?php foreach ($schedules as $schedule): ?>
+                <tr>
+                  <td><?php echo htmlspecialchars($schedule['service']['serviceName']); ?></td> <!-- Service Name -->
+                  <td><?php echo htmlspecialchars($schedule['dayOfWeek']); ?></td> <!-- Day of the Week -->
+                  <td><?php echo htmlspecialchars($schedule['startTime']); ?></td> <!-- Start Time -->
+                  <td><?php echo htmlspecialchars($schedule['endTime']); ?></td> <!-- End Time -->
+                  <td><?php echo htmlspecialchars($schedule['maxCapacity']); ?></td> <!-- Max Capacity -->
+                  <td><?php echo htmlspecialchars($schedule['user']['fullName']); ?></td> <!-- Trainer Name -->
+                  <td>
+                    <span onclick="openModal('<?php echo htmlspecialchars($schedule['service']['serviceName']); ?>')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 512">
+                        <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />
+                      </svg>
+                    </span>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="7">No schedules found</td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>

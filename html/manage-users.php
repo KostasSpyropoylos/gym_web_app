@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 // Check if the user session is set
 if (!isset($_SESSION['user'])) {
   // If the user session is not set, redirect to the login page
