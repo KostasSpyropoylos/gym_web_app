@@ -6,7 +6,7 @@ $user = isset($_SESSION['user']) ?? null;  // 0 means no role or default role
 
 <?php if ($user): ?>
     <a href="logout.php">
-    Αποσυνδέσου
+    Αποσύνδεση
     </a>
 
 

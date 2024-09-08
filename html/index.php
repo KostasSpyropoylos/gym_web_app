@@ -110,7 +110,7 @@ function formatTimestamp($timestamp)
           </table>
         </div>
       <?php endif; ?>
-      <?php if ($user_role == 1 || !isset($user)): ?>
+      <?php if (($user_role == 1 || $user_role == 2) || !isset($user)): ?>
         <div class="container">
           <h1>Ανακοινώσεις</h1>
 
