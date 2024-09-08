@@ -14,11 +14,10 @@ body {
   position: fixed;
   height: 100%;
   overflow: auto;
-  
 }
 
 /* Sidebar links */
-.sidebar a {
+.sidebar  a {
   display: block;
   color: black;
   padding: 16px;
@@ -46,12 +45,21 @@ svg {
   color: #007bff !important;
 }
 /* Topbar Styles */
-.topbar{
+.topbar {
   flex-grow: 4;
-  padding:2px;
-  right: 300px;
-  background-color: #fff;
-  z-index: 1;
+  padding: 1.4em;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  /* z-index: 1; */
+}
+.topbar a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  font-size: 1.5em;
 }
 
 /* Content Start Here */
@@ -73,39 +81,40 @@ div.main-content {
   border-radius: 5px;
 }
 input {
-  padding: 12px 20px;         /* Consistent padding */
-  margin: 8px 0;              /* Consistent margin */
-  box-sizing: border-box;     /* Ensures padding and border are included in width/height */
-  border: 1px solid #ccc;     /* Same border as select */
-  border-radius: 4px;         /* Rounded corners for consistency */
-  background-color: white;    /* Background color to match the select */
-  font-size: 16px;            /* Font size for consistency */
-  width: 100%;                /* Full width to align with other elements */
-  appearance: none;           /* Removes default styling, but note this has minimal effect on inputs */
+  padding: 12px 20px; /* Consistent padding */
+  margin: 8px 0; /* Consistent margin */
+  box-sizing: border-box; /* Ensures padding and border are included in width/height */
+  border: 1px solid #ccc; /* Same border as select */
+  border-radius: 4px; /* Rounded corners for consistency */
+  background-color: white; /* Background color to match the select */
+  font-size: 16px; /* Font size for consistency */
+  width: 100%; /* Full width to align with other elements */
+  appearance: none; /* Removes default styling, but note this has minimal effect on inputs */
 }
 
 input:focus {
-  border-color: #4A90E2;      /* Highlight border color on focus */
-  outline: none;              /* Removes default outline */
+  border-color: #4a90e2; /* Highlight border color on focus */
+  outline: none; /* Removes default outline */
 }
 select {
-  padding: 12px 20px;  /* Same padding as input */
-  margin: 8px 0;       /* Same margin as input */
+  padding: 12px 20px; /* Same padding as input */
+  margin: 8px 0; /* Same margin as input */
   box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
   border: 1px solid #ccc; /* Adds a border similar to a standard input */
-  border-radius: 4px;  /* Adds rounded corners */
+  border-radius: 4px; /* Adds rounded corners */
   background-color: white; /* Default background color */
-  font-size: 16px;     /* Adjust font size for consistency */
-  width: 100%;         /* Make the select box width consistent with input elements */
-  appearance: none;    /* Removes the default browser styling for select */
+  font-size: 16px; /* Adjust font size for consistency */
+  width: 100%; /* Make the select box width consistent with input elements */
+  appearance: none; /* Removes the default browser styling for select */
 }
 
 select:focus {
-  border-color: #4A90E2; /* Adds a highlight border color when focused */
-  outline: none;         /* Removes default outline */
+  border-color: #4a90e2; /* Adds a highlight border color when focused */
+  outline: none; /* Removes default outline */
 }
 
-.danger:hover, .success:hover{
+.danger:hover,
+.success:hover {
   cursor: pointer;
 }
 .success {
@@ -114,7 +123,6 @@ select:focus {
   border: none;
   border-radius: 5px;
 }
-
 
 .modal {
   display: none; /* Hidden by default */
@@ -137,7 +145,6 @@ select:focus {
   border: 1px solid #888;
   width: 60%; /* Could be more or less, depending on screen size */
   border-radius: 10px;
-
 }
 
 /* The Close Button */
@@ -154,16 +161,96 @@ select:focus {
   text-decoration: none;
   cursor: pointer;
 }
-.item{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1em;
+
+.btn-row {
+  display: flex;
+  flex-direction: row;
+  column-gap: 1em;
 }
-.item:first-child{
-    margin-top: 2em;
+.btn-row > button {
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 0.3em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 13px;
 }
-.submit{
-    display: flex;
-    justify-content: flex-end;
-    column-gap: 2em;
+.btn-row > button:hover {
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #28a745;
+  color: white; /* Blue for edit button */
+}
+
+.edit-btn:hover {
+  background-color: #218838;
+}
+
+.add-btn {
+  background-color: "#00db00"; /* Green for add button */
+}
+
+.add-btn:hover {
+  background-color: "#00db00"; /* Darker add on hover */
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red for delete button */
+}
+
+.delete-btn:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+.item:first-child {
+  margin-top: 2em;
+}
+.submit {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 2em;
+}
+
+.table-container {
+  margin-top: 3em;
+  background-color: white;
+  align-items: center;
+  color: black;
+  padding: 1em;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+tr:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+th {
+  border-bottom: 2px solid #ddd;
+}
+td {
+  border-bottom: 5px solid #ddd;
+}
+
+td {
+  text-align: center;
+  height: 50px;
+}
+td > svg {
+  font-size: 7px;
+}
+td > svg:hover {
+  cursor: pointer;
 }

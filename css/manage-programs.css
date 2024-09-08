@@ -83,22 +83,6 @@ td >span> svg:hover {
   margin-right: 8px;
 }
 
-.edit-btn {
-  background-color: #007bff; /* Blue for edit button */
-}
-
-.edit-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-.delete-btn {
-  background-color: #dc3545; /* Red for delete button */
-}
-
-.delete-btn:hover {
-  background-color: #c82333; /* Darker red on hover */
-}
-
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
