@@ -17,7 +17,7 @@ body {
 }
 
 /* Sidebar links */
-.sidebar  a {
+.sidebar a {
   display: block;
   color: black;
   padding: 16px;
@@ -232,22 +232,38 @@ select:focus {
 table {
   width: 100%;
   border-collapse: collapse;
+  margin: 1em 0em;
 }
 
-tr:hover {
-  background-color: rgba(0, 123, 255, 0.2);
+table,
+th,
+td {
+  border: 1px solid #ddd;
 }
 th {
   border-bottom: 2px solid #ddd;
+  background-color: #007bff;
+  color: white;
 }
+th,
 td {
-  border-bottom: 5px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+tr:hover {
+  background-color: rgba(0, 123, 255, 0.2);
 }
 
 td {
+  border-bottom: 5px solid #ddd;
   text-align: center;
   height: 50px;
 }
+
 td > svg {
   font-size: 7px;
 }
