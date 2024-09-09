@@ -132,7 +132,7 @@ $services = fetchServicesFromAPI();
 
 <body>
     <div class="sidebar"><?php require '../shared/sidebar.php'; ?></div>
-    <div class="topbar"><?php require '../shared/topbar.php'; ?></div>
+    
     <div class="content">
         <div class="main-content">
             <div class="container">

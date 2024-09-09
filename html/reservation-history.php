@@ -53,8 +53,6 @@ $reservations = getReservationByUserId($userId);
     <link rel="stylesheet" href="/css/global-styles.css" />
     <link rel="stylesheet" href="/css/manage-users.css" />
     <style>
-
-
         h1 {
             text-align: center;
             margin-bottom: 20px;
@@ -64,7 +62,7 @@ $reservations = getReservationByUserId($userId);
 
 <body>
     <div class="sidebar"><?php require '../shared/sidebar.php'; ?></div>
-    <div class="topbar"><?php require '../shared/topbar.php'; ?></div>
+
     <div class="content">
         <div class="main-content">
             <h1>Reservation Details</h1>
@@ -74,7 +72,6 @@ $reservations = getReservationByUserId($userId);
                     <table>
                         <thead>
                             <tr>
-                                <th>Reservation Date</th>
                                 <th>Status</th>
                                 <th>Service Name</th>
                                 <th>Day of Week</th>
@@ -85,7 +82,6 @@ $reservations = getReservationByUserId($userId);
                         <tbody>
                             <?php foreach ($reservations as $reservation): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($reservation['reservationDate']); ?></td>
                                     <td><?php echo htmlspecialchars($reservation['status']); ?></td>
                                     <td><?php echo htmlspecialchars($reservation['schedule']['service']['serviceName']); ?></td>
                                     <td><?php echo htmlspecialchars($reservation['schedule']['dayOfWeek']); ?></td>

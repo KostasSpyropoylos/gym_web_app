@@ -49,7 +49,7 @@ function formatTimestamp($timestamp)
 
 <body>
   <div class="sidebar"><?php require '../shared/sidebar.php'; ?></div>
-  <div class="topbar"><?php require '../shared/topbar.php'; ?></div>
+
   <div class="content">
     <div class="main-content">
       <?php if ($user_role == 3): ?>

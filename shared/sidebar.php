@@ -50,3 +50,15 @@ $user_role = isset($_SESSION['userRole']) ? $_SESSION['userRole'] : 1;  // 0 mea
       </svg>Ιστορικό Κρατήσεων</a>
   <?php endif; ?>
 <?php endif; ?>
+
+<?php if (isset($_SESSION['userRole'])): ?>
+  <a href="logout.php">
+    Αποσύνδεση
+  </a>
+
+
+<?php else: ?>
+  <a href="login.php">
+    Σύνδεση
+  </a>
+<?php endif; ?>

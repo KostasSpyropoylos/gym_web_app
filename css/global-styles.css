@@ -9,7 +9,7 @@ body {
 .sidebar {
   margin: 0;
   padding: 0;
-  width: 25rem;
+  width: 20rem;
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
@@ -64,7 +64,7 @@ svg {
 
 /* Content Start Here */
 div.content {
-  margin-left: 25rem;
+  margin-left: 20rem;
   padding: 1px 16px;
   height: 100%;
   width: 100%;
@@ -269,4 +269,66 @@ td > svg {
 }
 td > svg:hover {
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar a {
+   text-align: center;
+  }
+  div.content {
+    margin-left: 0;
+    padding: 0;
+  }
+  .sidebar .active {
+    background-color: #007bff;
+    color: white;
+  }
+  .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #007bff !important;
+  }
+
+  .topbar {
+    flex-grow: 1;
+    padding: 1.4em;
+    background-color: #f1f1f1;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: center;
+  }
+  .topbar a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-size: 1em;
+  }
+
+  /* div.content {
+    
+    height: 100%;
+    width: 100%;
+  } */
+}
+
+@media screen and (max-width: 400px) {
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
 }
