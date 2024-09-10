@@ -39,7 +39,7 @@ function getReservationByUserId($userId)
 }
 
 // Fetch reservations for a specific user ID
-$userId = 1; // Replace with actual user ID or get it from a query parameter
+$userId = $_SESSION['userId'];
 $reservations = getReservationByUserId($userId);
 ?>
 

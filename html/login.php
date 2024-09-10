@@ -44,9 +44,10 @@ if (!isset($_SESSION['user'])) {
         // Here you can set session variables or cookies as needed
         session_start();
         $_SESSION['user'] = $responseData; // Store the user data in session
-        if (isset($responseData['roleId'])) {
+        $_SESSION['userId'] = $responseData['userId'];
+        
           $_SESSION['userRole'] = $responseData['roleId'];
-        }
+        
         header('Location: ./index.php'); // Redirect to home page after successful login
         exit;
       } else {
