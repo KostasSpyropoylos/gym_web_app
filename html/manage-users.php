@@ -188,7 +188,7 @@ if (curl_errno($ch)) {
 
 <body>
   <div class="sidebar"><?php require '../shared/sidebar.php'; ?></div>
-  
+
   <div class="content">
     <div class="main-content">
       <div class="pending-users">
@@ -212,7 +212,9 @@ if (curl_errno($ch)) {
         echo '<div class="card-container">';
         foreach ($users as $user) {
           // Filter users
-          if ($user['isPending'] == true && $user['isActive'] === NULL) {
+          if (($user['isPending'] == 1 && !isset($user['isActive'])) || ($user['isPending'] == 1 && $user['isActive'] == null)) {
+
+
             $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
             // Generate HTML for each user
             echo '    <div class="card">';
@@ -264,9 +266,9 @@ if (curl_errno($ch)) {
         // Loop through the users array and generate table rows
         foreach ($users as $user) {
           $role = ($user['roleId'] == 1) ? 'Γυμναστής' : (($user['roleId'] == 2) ? 'Αθλητής' : 'Admin');
-          $status = ($user['isActive'] ? "Ενεργός" : "Ανενεργός");
-          if ($user['isActive'] !== Null) {
-            $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates'; 
+
+          $status = (isset($user['isActive']) ? "Ενεργός" : "Ανενεργός");
+            $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates';
             $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
             echo '<tr>';
             echo '<td>' . htmlspecialchars($user['fullName']) . '</td>';
@@ -281,7 +283,6 @@ if (curl_errno($ch)) {
             echo '    <path d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z" />';
             echo '</svg>';
             echo '</td>';
-          }
         }
 
         echo '  </tbody>
