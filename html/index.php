@@ -1,35 +1,36 @@
 <?php
-session_start();
+session_start(); // Start the session to access session variables
 
-$user_role = isset($_SESSION['userRole']) ? $_SESSION['userRole'] : 1;  // 0 means no role or default role
+// Check if userRole is set in session; default to 1 if not. (0 means no role or default role)
+$user_role = isset($_SESSION['userRole']) ? $_SESSION['userRole'] : 1;  
 
-$apiUrl = "localhost:8080/GymWebService/rest/announcements"; // Replace with your actual API URL
-$ch = curl_init($apiUrl);
+$apiUrl = "localhost:8080/GymWebService/rest/announcements"; // API endpoint for fetching announcements
+$ch = curl_init($apiUrl); // Initialize cURL session with the API URL
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the API response as a string
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); // Set content type as JSON
 
 // Execute cURL request
 $response = curl_exec($ch);
 
 // Check for cURL errors
 if (curl_errno($ch)) {
-  echo 'Error: ' . curl_error($ch);
-  return [];
+  echo 'Error: ' . curl_error($ch); // Display cURL error if present
+  return []; // Return empty array in case of error
 } else {
-  // Decode the JSON response
+  // Decode the JSON response to a PHP array
   $announcements = json_decode($response, true);
 }
 
-
-// Format timestamp for display
+// Function to format timestamp for display
 function formatTimestamp($timestamp)
 {
-  $date = new DateTime($timestamp);
-  // Format it to something more readable, e.g., "August 28, 2024, 9:10 PM"
+  $date = new DateTime($timestamp); // Create a DateTime object from the timestamp
+  // Format it to a readable format like "August 28, 2024, 9:10 PM"
   return $date->format('F j, Y, g:i A');
 }
 ?>
+
 
 
 <!DOCTYPE html>

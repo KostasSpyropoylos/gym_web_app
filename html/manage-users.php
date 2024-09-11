@@ -266,7 +266,7 @@ if (curl_errno($ch)) {
           $role = ($user['roleId'] == 1) ? 'Γυμναστής' : (($user['roleId'] == 2) ? 'Αθλητής' : 'Admin');
           $status = ($user['isActive'] ? "Ενεργός" : "Ανενεργός");
           if ($user['isActive'] !== Null) {
-            $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates'; // Example for subscription, replace with actual logic
+            $subscriptionType = ($user['roleId'] == 1) ? 'Admin' : 'Pilates'; 
             $userDataJson = htmlspecialchars(json_encode($user), ENT_QUOTES, 'UTF-8');
             echo '<tr>';
             echo '<td>' . htmlspecialchars($user['fullName']) . '</td>';

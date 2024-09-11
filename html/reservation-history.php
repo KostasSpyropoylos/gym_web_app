@@ -9,7 +9,7 @@ if (!isset($_SESSION['user'])) {
 }
 function getReservationByUserId($userId)
 {
-    $apiUrl = "localhost:8080/GymWebService/rest/reservations/user/$userId"; // Replace with your actual API URL
+    $apiUrl = "localhost:8080/GymWebService/rest/reservations/user/$userId"; 
 
     // Initialize cURL session
     $ch = curl_init();

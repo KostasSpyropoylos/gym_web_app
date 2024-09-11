@@ -1,12 +1,11 @@
 <?php
-session_start();
-if (!isset($_SESSION['user'])) {
+session_start(); // Start session to handle user session data
+if (!isset($_SESSION['user'])) { // Check if user session is not set (user not logged in)
 
-
-  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Ensure the request is a POST request
     // Check which form was submitted (login or registration)
     if (isset($_POST['form_type'])) {
-      if ($_POST['form_type'] === 'login') {
+      if ($_POST['form_type'] === 'login') { // Handle login form submission
         $email = $_POST['login_email'];
         $password = $_POST['login_password'];
 
@@ -19,122 +18,120 @@ if (!isset($_SESSION['user'])) {
         // Convert data to JSON format
         $jsonData = json_encode($postData);
 
-        // API endpoint URL
-        $apiUrl = 'localhost:8080/GymWebService/rest/users'; // Replace with your actual API URL
+        // API endpoint URL for login
+        $apiUrl = 'localhost:8080/GymWebService/rest/users'; 
 
         // Initialize cURL session
         $ch = curl_init($apiUrl);
 
-        // Set cURL options
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        // Set cURL options for a POST request with JSON data
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); // Set content type to JSON
+        curl_setopt($ch, CURLOPT_POST, true); // Specify this is a POST request
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData); // Attach the JSON payload
 
         // Execute cURL request
         $response = curl_exec($ch);
 
         // Check for cURL errors
         if (curl_errno($ch)) {
-          echo 'Error: ' . curl_error($ch);
+          echo 'Error: ' . curl_error($ch); // Display cURL error if present
         } else {
           // Decode the JSON response
           $responseData = json_decode($response, true);
 
           // Check the response status
-          if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) {
-            // Login successful
-            // Here you can set session variables or cookies as needed
-            session_start();
-            $_SESSION['user'] = $responseData; // Store the user data in session
-            $_SESSION['userId'] = $responseData['userId'];
-
-            $_SESSION['userRole'] = $responseData['roleId'];
+          if (curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200) { // Success if HTTP status is 200
+            // Login successful, set session variables
+            session_start(); // Start a new session
+            $_SESSION['user'] = $responseData; // Store user data in session
+            $_SESSION['userId'] = $responseData['userId']; // Store user ID
+            $_SESSION['userRole'] = $responseData['roleId']; // Store user role
 
             header('Location: ./index.php'); // Redirect to home page after successful login
             exit;
           } else {
             // Login failed
             echo $responseData;
-            echo 'Invalid email or password. Please try again.';
+            echo 'Invalid email or password. Please try again.'; // Error message on login failure
           }
         }
 
-        // Close cURL session
+        // Close cURL session after login request
         curl_close($ch);
-      }elseif ($_POST['form_type'] === 'register') {
+      } elseif ($_POST['form_type'] === 'register') { // Handle registration form submission
         // Registration form was submitted
         $username = $_POST['username'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirmPassword = $_POST['confirm-password'];
-  
+
         // Ensure password and confirm password match
         if ($password !== $confirmPassword) {
           echo "Passwords do not match!";
           exit();
         }
-        $currentDateTime = date('Y-m-d H:i:s');
-  
+        $currentDateTime = date('Y-m-d H:i:s'); // Get current date and time
+
         // Prepare data for the registration API call
         $data = [
-          'userName' => $username,             // The username provided by the user
-          'fullName' => $username,             // You may change this to capture a full name instead of username
-          'email' => $email,                   // Email address
+          'userName' => $username,             // Username provided by the user
+          'fullName' => $username,             // Full name (can be adjusted to capture a full name separately)
+          'email' => $email,                   // User's email
           'password' => $password,             // User's password
-          'createAt' => $currentDateTime,      // Current datetime when the registration is created
-          'roleId' => 1,                       // Role ID, assuming 1 is the default for normal users
-          'phoneNumber' => "",                 // Empty phone number for now, can be added later
-          'bio' => "",                         // Empty bio for now, can be added later
-          'isPending' => 1,                    // Assuming the account is pending approval (set to 1)
-          'isActive' => null                   // The account is inactive initially (null)
+          'createAt' => $currentDateTime,      // Timestamp of registration
+          'roleId' => 1,                       // Default role for normal users
+          'phoneNumber' => "",                 // Empty phone number for now
+          'bio' => "",                         // Empty bio for now
+          'isPending' => 1,                    // Pending approval
+          'isActive' => null                   // Initially inactive
         ];
-  
-        // Convert the data to JSON
+
+        // Convert the data to JSON format
         $jsonData = json_encode($data);
-  
-        // Initialize cURL for registration API call
+
         // Initialize cURL for the registration API call
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/GymWebService/rest/users/new'); // Ensure this endpoint is correct
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/GymWebService/rest/users/new'); // API endpoint for new user registration
+        curl_setopt($ch, CURLOPT_POST, 1); // Specify this is a POST request
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData); // Attach the JSON payload
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response as a string
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
           'Content-Type: application/json',
-          'Content-Length: ' . strlen($jsonData)
+          'Content-Length: ' . strlen($jsonData) // Set content length
         ]);
-  
+
         // Execute the registration request
         $response = curl_exec($ch);
-  
+
         // Check for cURL errors
         if (curl_errno($ch)) {
-          echo 'cURL Error: ' . curl_error($ch);
+          echo 'cURL Error: ' . curl_error($ch); // Display cURL error if present
         } else {
           // Get the HTTP status code of the response
           $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-  
+
           // Output detailed response for debugging
           echo "<pre>HTTP Code: $httpCode</pre>";
           echo "<pre>Response: " . htmlspecialchars($response) . "</pre>";
-  
+
           if ($httpCode == 200) {
-            echo "Registration successful!";
+            echo "Registration successful!"; // Registration success message
           } else {
-            echo "Registration failed. HTTP Code: " . $httpCode;
+            echo "Registration failed. HTTP Code: " . $httpCode; // Error message if registration fails
           }
         }
-  
-        // Close the cURL session
+
+        // Close the cURL session after registration request
+        curl_close($ch);
       }
-    } 
-    curl_close($ch);
+    }
   }
 } else {
-  header('Location: ./index.php'); // Redirect to home page after successful login
+  header('Location: ./index.php'); // Redirect to home page if user is already logged in
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

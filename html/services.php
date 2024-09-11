@@ -5,8 +5,7 @@ session_start();
 
 function fetchServicesFromAPI()
 {
-    // Your API endpoint
-    $apiUrl = "localhost:8080/GymWebService/rest/services"; // Replace with your actual API URL
+    $apiUrl = "localhost:8080/GymWebService/rest/services"; 
 
     // Initialize cURL session
     $ch = curl_init();

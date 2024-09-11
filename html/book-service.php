@@ -1,24 +1,26 @@
 <?php
-session_start();
+session_start(); // Start the session to access session variables
+
 // Function to fetch schedules by serviceId from the API
 
 if (!isset($_SESSION['user'])) {
     // If the user session is not set, redirect to the login page
     header('Location: login.php'); // Adjust the login page URL as needed
-    exit();
+    exit(); // Ensure the script stops executing after redirection
 } else {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Debugging: Check the entire POST data
+        // print_r($_POST); // Uncomment this to see the POST data for debugging purposes
 
         // Check if the dropdown (servicesDropdown) has been submitted and is not empty
         if (!empty($_POST['servicesDropdown'])) {
             // Capture the service ID from the form submission
             $selectedServiceId = $_POST['servicesDropdown'];
-            $userId = $_SESSION['userId'];
+            $userId = $_SESSION['userId']; // Fetch userId from session
 
             // Debugging: Output the selected values
-
+            // echo "Selected Service ID: $selectedServiceId, User ID: $userId"; // Useful for checking inputs
 
             // Prepare data for API call
             $data = [
@@ -28,7 +30,7 @@ if (!isset($_SESSION['user'])) {
                 'schedule' => [
                     'scheduleId' => $selectedServiceId
                 ],
-                'status' => 'Booked'
+                'status' => 'Booked' // Setting status to 'Booked'
             ];
 
             // Convert data array to JSON
@@ -38,13 +40,13 @@ if (!isset($_SESSION['user'])) {
             $ch = curl_init();
 
             // Set cURL options for the POST request
-            curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/GymWebService/rest/reservations/new');
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/GymWebService/rest/reservations/new'); // API endpoint
+            curl_setopt($ch, CURLOPT_POST, 1); // Specify this is a POST request
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData); // Attach the JSON payload
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($jsonData)
+                'Content-Type: application/json', // Setting the content type to JSON
+                'Content-Length: ' . strlen($jsonData) // Set the content length
             ]);
 
             // Execute the request and capture the response
@@ -52,32 +54,36 @@ if (!isset($_SESSION['user'])) {
 
             // Check for cURL errors
             if (curl_errno($ch)) {
-                echo 'Error: ' . curl_error($ch);
+                echo 'Error: ' . curl_error($ch); // Print cURL error message
             } else {
-                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                // Check if the request was successful
-
-                echo 'Response from API: ' . $response;
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get the HTTP response code
+                // Check if the request was successful (HTTP code 200-299)
+                if ($httpCode >= 200 && $httpCode < 300) {
+                    echo 'Response from API: ' . $response; // Display the API response
+                } else {
+                    echo "Failed to book. HTTP Code: $httpCode"; // Handle non-2xx HTTP codes
+                }
             }
 
             // Close cURL session
             curl_close($ch);
         } else {
-            echo "No service selected.";
+            echo "No service selected."; // Message when no option is chosen from the dropdown
         }
     }
 }
+
 function fetchSchedulesFromAPI()
 {
-    // Your API endpoint
-    $apiUrl = "localhost:8080/GymWebService/rest/schedules"; // Replace with your actual API URL
+   
+    $apiUrl = "localhost:8080/GymWebService/rest/schedules"; 
 
     // Initialize cURL session
     $ch = curl_init();
 
     // Set cURL options
-    curl_setopt($ch, CURLOPT_URL, $apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_URL, $apiUrl); // API URL to fetch schedules
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); // Set the appropriate content type
 
     // Execute the request and get the response
@@ -85,7 +91,7 @@ function fetchSchedulesFromAPI()
 
     // Check if there were any errors
     if (curl_errno($ch)) {
-        echo 'cURL Error: ' . curl_error($ch);
+        echo 'cURL Error: ' . curl_error($ch); // Print cURL error
         return []; // Return an empty array in case of error
     }
 
@@ -97,18 +103,17 @@ function fetchSchedulesFromAPI()
 
     // Check if the response is a valid JSON
     if (json_last_error() !== JSON_ERROR_NONE) {
-        echo 'JSON Error: ' . json_last_error_msg();
+        echo 'JSON Error: ' . json_last_error_msg(); // Print JSON error message
         return []; // Return an empty array in case of JSON error
     }
 
-    return $schedules;
+    return $schedules; // Return the array of schedules
 }
 
 // Fetch the schedules
-$schedules = fetchSchedulesFromAPI();
+$schedules = fetchSchedulesFromAPI(); // Populate the $schedules array with the API response
 ?>
 
-?>
 <!DOCTYPE html>
 <html lang="en">
 

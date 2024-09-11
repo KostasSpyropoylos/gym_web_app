@@ -10,7 +10,6 @@ if (!isset($_SESSION['user'])) {
 
 function fetchSchedulesByServiceId($serviceId)
 {
-    // Your API endpoint, replace with the actual API URL
     $apiUrl = "localhost:8080/GymWebService/rest/schedules/schedule/" . $serviceId;
 
     // Initialize cURL session
